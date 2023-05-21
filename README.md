@@ -1,1 +1,1 @@
-# Deep-Unfolded-Superposition-Coding-Optimization-for-Two-Hop-NOMA-MANETs
+# Deep-Unfolded-PGD
