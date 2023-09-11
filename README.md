@@ -3,9 +3,9 @@ Python repository for the paper "Deep Unfolded Superposition Coding Optimization
 for Two-Hop NOMA MANETs"
 ---
 ## Table of Contents
-1. - [Introduction](#introduction)
-2. - [PGDNet (python codes)](#PGDNet (python codes))
-3. - [GNN (python codes)](#GNN (python codes))
+ - [Introduction](#introduction)
+ - [PGDNet (python codes)](#PGDNet (python codes))
+ - [GNN (python codes)](#GNN (python codes))
 ---
 ## Introduction
 This repository implements the proposed method of PGDNet for NOMA MANET, a deep-unfolded deep learning power allocation optimization algorithm.
