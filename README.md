@@ -11,6 +11,9 @@ for Two-Hop NOMA MANETs"
 This repository implements the proposed method of PGDNet for NOMA MANET, a deep-unfolded deep learning power allocation optimization algorithm.
 We also implement a graph neural network (GNN) algorithm which serves as a benchmark for the PGDNet.
 
+
+T. Alter and N. Shlezinger, "Deep Unfolded Superposition Coding Optimization for Two-Hop NOMA MANETs", IEEE Military Communications Conference (MilCom) 2023.
+
 ---
 ## PGDNet
 Includes the network module, and all needed functions for net analysis, channel generation, and plotting functions.
