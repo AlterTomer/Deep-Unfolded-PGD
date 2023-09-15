@@ -556,10 +556,14 @@ class PGDNet(nn.Module):
             row_norms = torch.norm(abs(x))
         else:
             row_norms = torch.norm(abs(x), dim=1)
-        # x_proj = torch.max(torch.full_like(x, eps), x / row_norms.unsqueeze(-1))
-        x[x < 0] = 0
-        x_proj = x / row_norms.unsqueeze(-1)
-
+        
+        # Create a copy of x to avoid in-place modification
+        x_proj = x.clone()
+    
+        # Apply the projection while ensuring non-negativity
+        x_proj[x_proj < 0] = 0
+        x_proj /= row_norms.unsqueeze(-1)
+    
         return x_proj
 
     def forward(self, num_iter, G, H):
