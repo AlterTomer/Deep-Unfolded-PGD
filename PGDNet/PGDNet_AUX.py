@@ -2,7 +2,6 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 from time import time
-from PGD_AUXFunctions import find_capacity
 from random import randint, seed
 
 
@@ -13,51 +12,6 @@ def monotone_arr(arr):
         if arr[i] < arr[i - 1]:
             arr[i] = arr[i - 1]
     return arr
-
-
-def min_rate_vs_capacity(ch_n_valid, min_rate_v_arr, h_valid, k, sigma, name):
-    """
-    :param ch_n_valid: Number of channels to work on
-    :param min_rate_v_arr: Sum rate data along PGD iterations
-    :param h_valid: Channels to work on
-    :param k:  Number of PGD iterations
-    :param name: graph's name
-    """
-    n_arr = []
-    if type(name) == int:
-        seed(name)
-
-    for i in range(4):
-        n_arr.append(randint(0, ch_n_valid - 1))
-
-    srv1 = monotone_arr(min_rate_v_arr[:, n_arr[0]].detach().numpy())
-    srv2 = monotone_arr(min_rate_v_arr[:, n_arr[1]].detach().numpy())
-    srv3 = monotone_arr(min_rate_v_arr[:, n_arr[2]].detach().numpy())
-    srv4 = monotone_arr(min_rate_v_arr[:, n_arr[3]].detach().numpy())
-    c_arr = []
-    for i in range(len(n_arr)):
-        _, c = find_capacity(h_valid[n_arr[i]].tolist(), sigma)
-        c_arr.append(c)
-
-    t_K = np.linspace(start=1, stop=k, num=k)
-    plt.figure(figsize=(8, 6), dpi=80)
-    plt.plot(t_K, srv1, linestyle='dotted', color='green')
-    plt.axhline(y=c_arr[0], linestyle='--', label=f'channel 1 capacity', color='green')
-    plt.plot(t_K, srv2, linestyle='dotted', color='orange')
-    plt.axhline(y=c_arr[1], linestyle='--', label=f'channel 2 capacity', color='orange')
-    plt.plot(t_K, srv3, linestyle='dotted', color='blue')
-    plt.axhline(y=c_arr[2], linestyle='--', label=f'channel 3 grid capacity', color='blue')
-    plt.plot(t_K, srv4, linestyle='dotted', color='black')  # label=f'Valid sum-rate channel: {n_arr[3]}'
-    plt.axhline(y=c_arr[3], linestyle='--', label='channel 4 grid capacity', color='black')  # label=f'channel {
-    # n_arr[3]} capacity'
-    plt.xlabel('Number of Iterations')
-    plt.ylabel('Min Rate')
-    plt.legend(loc='best')
-    # plt.title('Comparison of Different Valid Channels')
-    plt.grid()
-    # plt.show()
-    plt.savefig(f'capacity_{name}.jpg')
-    plt.close()
 
 
 def train_valid_loss(epochs, train_loss, valid_loss, name):
