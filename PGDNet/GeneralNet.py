@@ -68,7 +68,7 @@ class BC_Relay:
         nm, p_n = phi_n
         tm, p_t = phi_t
         if tm > nm:
-            return 0
+            return torch.tensor([0])
 
         elif tm == nm:
             all_phi = torch.cat((smaller_phi, p_n), dim=0)
@@ -115,6 +115,7 @@ class BC_Relay:
                 t = float(t_match.group()) if '.' in t_match.group() else int(t_match.group())
                 phi_t = (i, sort_phi[element])  # i --> t - 1
                 grad[t - 1] = self.dr_df(smaller_phi, g_m, phi_n, phi_t, sigma)
+
             grad_dict[f'r_{phi_number}'] = (grad / np.log(2)).float()  # torch.tensor(grad / np.log(2)).float()
 
         return grad_dict
@@ -188,7 +189,7 @@ class MAC_Relay:
         """
 
         if g_tl > g_nl:
-            return 0
+            return torch.tensor([0])
 
         elif g_tl == g_nl:
             if g_after.size()[0] == 0:
@@ -333,7 +334,7 @@ class EndUser:
         """
 
         if g_tl > g_nl:
-            return 0
+            return torch.tensor([0])
 
         elif g_tl == g_nl:
             if g_after.size()[0] == 0:
@@ -556,14 +557,8 @@ class PGDNet(nn.Module):
             row_norms = torch.norm(abs(x))
         else:
             row_norms = torch.norm(abs(x), dim=1)
-        
-        # Create a copy of x to avoid in-place modification
-        x_proj = x.clone()
-    
-        # Apply the projection while ensuring non-negativity
-        x_proj[x_proj < 0] = 0
-        x_proj /= row_norms.unsqueeze(-1)
-    
+        x_proj = torch.max(torch.full_like(x, eps), abs(x / row_norms.unsqueeze(-1)))
+
         return x_proj
 
     def forward(self, num_iter, G, H):
@@ -579,7 +574,7 @@ class PGDNet(nn.Module):
         x_n_arr = []
 
         for i in range(num_iter):
-            min_rate_arr[i] = self.min_rate(G=G, H=H, phi=x_n[-T:] if T > 1 else x_n[-1:], p=x_n[:-T])[1]  # x_n[-T:] if T > 1 else x_n[-1:].unsqueeze(0)
+            min_rate_arr[i] = self.min_rate(G=G, H=H, phi=x_n[-T:] if T > 1 else x_n[-1:], p=x_n[:-T])[1]
             # PGD steps
             g = self.calc_grad(G=G, H=H, phi=x_n[-T:] if T > 1 else x_n[-1:], p=x_n[:-T])
             user = g[2]
@@ -598,7 +593,6 @@ class PGDNet(nn.Module):
             x_n_1 = self.proj(y_n_1)
             x_n = x_n_1.clone()
             x_n_arr.append(x_n)
-            # print(f'iter {i + 1} grad = {-grad}')
 
             if i == 0:
                 if 'relay' in user:
