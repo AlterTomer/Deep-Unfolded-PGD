@@ -1,6 +1,6 @@
 # Deep-Unfolded-PGD
-Python repository for the paper "Deep Unfolded Superposition Coding Optimization
-for Two-Hop NOMA MANETs"
+Python repository for the paper "Rapid Optimization of Superposition Codes for
+Multi-Hop NOMA MANETs via Deep Unfolding"
 ---
 ## Table of Contents
  - [Introduction](#introduction)
@@ -12,7 +12,8 @@ This repository implements the proposed method of PGDNet for NOMA MANET, a deep-
 We also implement a graph neural network (GNN) algorithm which serves as a benchmark for the PGDNet.
 
 
-T. Alter and N. Shlezinger, "Deep Unfolded Superposition Coding Optimization for Two-Hop NOMA MANETs", IEEE Military Communications Conference (MilCom) 2023.
+T. Alter and N. Shlezinger, Rapid Optimization of Superposition Codes for
+Multi-Hop NOMA MANETs via Deep Unfolding", IEEE Military Communications Conference (MilCom) 2023.
 
 ---
 ## PGDNet
