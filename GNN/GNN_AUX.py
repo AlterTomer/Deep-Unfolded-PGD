@@ -9,12 +9,10 @@ import matplotlib.pyplot as plt
 
 def create_manet_graph(channel_links, power_allocations, T, M, N):
     # Create the DGL graph object for your topology
-    # graph = dgl.graph(([], []), num_nodes=T + M + N)
     channel_links = channel_links.tolist()
     channel_links = torch.tensor([x for x in channel_links for _ in range(2)])
     graph = dgl.graph([])
     graph.add_nodes(T + M + N, data={'feat': power_allocations})
-    # graph.add_nodes(T + M + N, data=power_allocations)
     # Add edges between transmitters and relays
     t_indices = []
     m_indices = []
@@ -36,7 +34,6 @@ def create_manet_graph(channel_links, power_allocations, T, M, N):
     graph.add_edges(n_indices, m_indices)
     # Set edge features to store the channel information (channel_links)
     graph.edata['feat'] = channel_links
-    # graph.ndata['feat'] = power_allocations
 
     return graph
 
@@ -278,10 +275,7 @@ def collate(batch):
     graphs, user_power_allocations, channel_links = zip(*batch)
     batched_graph = dgl.batch(graphs)
     graph_sizes = [g.number_of_nodes() for g in graphs]
-    # print("Batched Graph:", batched_graph)
-    # print("User Power Allocations:", torch.stack(user_power_allocations))
-    # print("Channel Links:", torch.stack(channel_links))
-    # print("Graph Sizes:", graph_sizes)
+
     return batched_graph, torch.stack(user_power_allocations), torch.stack(channel_links), graph_sizes
 
 
@@ -302,7 +296,6 @@ def train_valid_loss(epochs, train_loss, valid_loss, name):
     plt.xlabel('Epochs')
     plt.ylabel('Loss (Negative Rate)')
     plt.legend(loc='best')
-    # plt.title('Train Loss vs Validation Loss')
     plt.grid()
     # plt.show()
     plt.savefig(f'Loss_{name}.jpg')
