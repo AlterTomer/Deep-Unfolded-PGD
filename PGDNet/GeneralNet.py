@@ -395,7 +395,7 @@ class EndUser:
                 p_st = p[row][col]
                 grad[row][col] = self.dr_dp(smaller_g, h_sl, g_nl, g_tl, p_st, sigma)  # g_after
 
-            grad_dict[f'r_{g_number}'] = (grad / np.log(2)).float()  # torch.tensor(grad / np.log(2)).float()
+            grad_dict[f'r_{g_number}'] = (grad / np.log(2)).float()
 
         return grad_dict
 
@@ -608,3 +608,6 @@ class PGDNet(nn.Module):
                         p_k = x_n[:-T]  # update the improved power allocations
 
         return x_n_arr, torch.cat((p_k, phi_k)), min_rate_arr  # x_n --> p_k
+
+
+   
