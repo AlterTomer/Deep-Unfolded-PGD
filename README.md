@@ -13,7 +13,7 @@ We also implement a graph neural network (GNN) algorithm which serves as a bench
 
 
 T. Alter and N. Shlezinger, "Rapid Optimization of Superposition Codes for
-Multi-Hop NOMA MANETs via Deep Unfolding".
+Multi-Hop NOMA MANETs via Deep Unfolding", can be found here: [(https://arxiv.org/abs/2406.05747)]
 
 ---
 ## PGDNet
